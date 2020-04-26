@@ -10,7 +10,8 @@ require("./server.js");
 const youtube = new YouTube(GOOGLE_API_KEY);
 const queue = new Map();
 const client = new Discord.Client();
-const author = '#8056';
+const author = '';
+const instagram = '';
 
 
 ////////////////////////////////////////////////////CLIENT////////////////////////////////////////////////////////////////////
@@ -43,7 +44,7 @@ client.on("message", message => {
     }
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
-    if (message.content.startsWith("!!!level")) {
+    if (message.content.startsWith(PREFIX + "level")) {
         let userInfo = db[message.author.id];
         let member = message.mentions.users.first() || message.author;
         let embed = new Discord.RichEmbed()
@@ -103,10 +104,10 @@ bot.on('message', async (msg) => {
   const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
-if (!msg.content.startsWith("!!!")) return;
+if (!msg.content.startsWith(PREFIX)) return;
 if (msg.author.bot) return;
 
-if (msg.content.startsWith('!!!warn')) {
+if (msg.content.startsWith(PREFIX + 'warn')) {
 if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply('You Not Admin!');
       let member = msg.mentions.members.first();
 if (!file[msg.mentions.members.first().id]) {
@@ -207,22 +208,18 @@ bot.on("message", async message => {
   if (message.author.bot) return;
   if (!message.guild) return;
   
-  if (message.content.startsWith("emoji")) {
-    message.channel.send( emoji("528208256124846111") + " Ini Kah")
-  }
-  
   if(message.content == client.user.toString()) {
 message.reply("Hi, my name is " + bot.user.tag + "\nIf You Want To Use Me With `!!!`")
   }
                       
                       
-  if (message.content.startsWith("!!!ping")) {
+  if (message.content.startsWith(PREFIX + "ping")) {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
-    message.channel.send(`Ping You : ${Date.now() - message.createdTimestamp} MS`);
+    message.channel.send(`Ping Me : ${Date.now() - message.createdTimestamp} MS`);
   }
 
-  let blacklisted = ["!!!play","!!!skip","!!!leave","!!!s","!!!join","!!!vol","!!!volume","!!!v","!!!p"]; //for blacklist message
+  let blacklisted = ["chat bad"]; //for blacklist message
 
   let foundInText = false;
   for (var i in blacklisted) {
@@ -237,7 +234,7 @@ message.reply("Hi, my name is " + bot.user.tag + "\nIf You Want To Use Me With `
 });
 
 function randomStatus() {
-  var time4 = moment(Date.now()).format("Do - MMMM - YYYY")
+  var tanggal = moment(Date.now()).format("Do - MMMM - YYYY")
   var jamWIB = moment(Date.now()).utcOffset("+0700").format("LT")
   var jamWITA = moment(Date.now()).utcOffset("+0800").format("LT")
   var jamWIT = moment(Date.now()).utcOffset("+0900").format("LT")
@@ -253,105 +250,6 @@ function randomStatus() {
 }
 setInterval(randomStatus, 10000);
 
-// Pass the entire Canvas object because you'll need to access its width, as well its context
-const applyText = (canvas, text) => {
-	const ctx = canvas.getContext('2d');
-
-	// Declare a base size of the font
-	let fontSize = 80;
-
-	do {
-		// Assign the font to the context and decrement it so it can be measured again
-		ctx.font = `${fontSize -= 10}px serif-bold`;
-		// Compare pixel width of the text to the canvas minus the approximate avatar size
-	} while (ctx.measureText(text).width > canvas.width - 300);
-
-	// Return the result to use in the actual canvas
-	return ctx.font;
-};
-
-bot.on("guildMemberAdd", async member => {
-  const channelme = member.guild.channels.find(ch => ch.name === '-join-goodbye');
-  if (!channelme) return;
-
-	const canvas = Canvas.createCanvas(700, 250);
-	const ctx = canvas.getContext('2d');
-
-	const background = await Canvas.loadImage('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQktJqv1dukU76F65KRJwGNBdMXIy-wEcW8XAvIGIkwDGXGnhCl&usqp=CAU');
-	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-	ctx.strokeStyle = '#ffffff';
-	ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-	// Slightly smaller text placed above the member's display name
-	ctx.font = '28px sans-serif';
-	ctx.fillStyle = '#ffffff';
-	ctx.fillText('Welcome ,', canvas.width / 2.5, canvas.height / 3.5);
-
-	// Add an exclamation point here and below
-	ctx.font = applyText(canvas, `${member.displayName}!`);
-	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
-
-	ctx.beginPath();
-	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.clip();
-
-	const avatar = await Canvas.loadImage(member.user.displayAvatarURL);
-	ctx.drawImage(avatar, 25, 25, 200, 200);
-
-	const attachment = new Discord.Attachment(canvas.toBuffer(), 'welcome-image.png');
-
-	channelme.send(`Welcome , ${member}!`, attachment);
-});
-
-bot.on("guildMemberRemove", async member => {
-  const channelme = member.guild.channels.find(ch => ch.name === '-join-goodbye');
-  if (!channelme) return;
-
-	const canvas = Canvas.createCanvas(700, 250);
-	const ctx = canvas.getContext('2d');
-
-	const background = await Canvas.loadImage('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQktJqv1dukU76F65KRJwGNBdMXIy-wEcW8XAvIGIkwDGXGnhCl&usqp=CAU');
-	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-	ctx.strokeStyle = '#ffffff';
-	ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-	// Slightly smaller text placed above the member's display name
-	ctx.font = '28px sans-serif';
-	ctx.fillStyle = '#ffffff';
-	ctx.fillText('Goodbye ,', canvas.width / 2.5, canvas.height / 3.5);
-
-	// Add an exclamation point here and below
-	ctx.font = applyText(canvas, `${member.displayName}!`);
-	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
-
-	ctx.beginPath();
-	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.clip();
-
-	const avatar = await Canvas.loadImage(member.user.displayAvatarURL);
-	ctx.drawImage(avatar, 25, 25, 200, 200);
-
-	const attachment = new Discord.Attachment(canvas.toBuffer(), 'welcome.png');
-
-	channelme.send(`Goobye , ${member}!`, attachment); 
-});
-
-bot.on('guildMemberAdd', member => {
-  
-  console.log('User ' + member.user.username + ' has joined the server!')
-  
-  let roles = member.guild.roles.find(x=> x.name === "}=Member={")
-if(!roles) return // biar kalo roles nya ga ada ke return
-  
-  member.addRole(roles)
-});
-
 bot.on("warn", console.warn);
 
 bot.on("error", console.error);
@@ -364,88 +262,6 @@ bot.on("reconnecting", () => console.log("I am reconnecting now..."));
 
 bot.on("ready", function() {
   console.log(`${bot.user.tag} READY!`);
-  
-  let countmember = bot.guilds.get("684799373900513311");
-let memberCount = countmember.memberCount;
-console.log(memberCount);
-let channelCount = countmember.channels.get("696839995901870100");
-channelCount.setName(`-All Member : ` + memberCount)
-  
-  bot.on('guildMemberAdd', member => {
-    let countmember = bot.guilds.get("684799373900513311");
-let memberCount = countmember.memberCount;
-console.log(memberCount);
-let channelCount = countmember.channels.get("696839995901870100");
-channelCount.setName(`-All Member : ` + memberCount)
-  });
-  
-  bot.on('guildMemberRemove', member => {
-  let countmember = bot.guilds.get("684799373900513311");
-let memberCount = countmember.memberCount;
-console.log(memberCount);
-let channelCount = countmember.channels.get("696839995901870100");
-channelCount.setName(`-All Member : ` + memberCount)
-  });
-
-  function kalender() {
-    var tanggal = moment(Date.now()).utcOffset("+0700").format("Do - MMMM - YYYY");
-    var jamWIB = moment(Date.now()).utcOffset("+0700").format("LT");
-    var jamWITA = moment(Date.now()).utcOffset("+0800").format("LT");
-    var jamWIT = moment(Date.now()).utcOffset("+0900").format("LT")
-    var hari = moment(Date.now()).utcOffset("+0700").format('dddd');
-    let myGuild1 = bot.guilds.get("685829347994763264");
-    let wildan = bot.guilds.get("684799373900513311");
-    let nikki = bot.guilds.get("660395366998343700");
-    let server = bot.guilds.get("696793597776756897");
-    
-    let serverdarksstars
-    let voice1 = myGuild1.channels.get("695999749257429022");
-    let voice2 = myGuild1.channels.get("703556180278247516");
-    let voice3 = myGuild1.channels.get("703556199903264808");
-    let voice4 = myGuild1.channels.get("703557468038496307");
-    
-    let serverbangrido
-    let voicewib = wildan.channels.get("701010462388518943");
-    let voicewita = wildan.channels.get("701012482705326100");
-    let voicewit = wildan.channels.get("701015057466654760");
-    let date1 = wildan.channels.get("701054014149886152");
-    
-    let serverfreedom
-    let nikkiwib = nikki.channels.get("701087927152803840");
-    let nikkiwita = nikki.channels.get("701087959130177626");
-    let nikkiwit = nikki.channels.get("701087990528868352");
-    let nikkidate = nikki.channels.get("701088040465989703");
-    
-    let servernikki
-    let serverwib = server.channels.get("701085158941655150");
-    let serverwita = server.channels.get("701085208761597972");
-    let serverwit = server.channels.get("701085308321661040");
-    let serverdate = server.channels.get("701085325719502928");
-    
-    voice1.setName(`-WIB ` + jamWIB);
-    voice2.setName(`-WITA ` + jamWITA);
-    voice3.setName(`-WIT ` + jamWIT);
-    voice4.setName(`-` + tanggal);
-    
-    
-    voicewib.setName(`-WIB ` + jamWIB);
-    voicewita.setName(`-WITA ` + jamWITA);
-    voicewit.setName(`-WIT ` + jamWIT);
-    date1.setName(`- ` + tanggal);
-    
-    nikkiwib.setName(`-WIB ` + jamWIB);
-    nikkiwita.setName(`-WITA ` + jamWITA);
-    nikkiwit.setName(`-WIT ` + jamWIT);
-    nikkidate.setName(`- ` + tanggal);
-    
-    serverwib.setName(`-WIB ` + jamWIB);
-    serverwita.setName(`-WITA ` + jamWITA);
-    serverwit.setName(`-WIT ` + jamWIT);
-    serverdate.setName(`- ` + tanggal);
-    
-  }
-  setInterval(kalender, 10000);
-});
 
 bot.on("message", function(message) {
   if (!message.guild) return;
@@ -578,7 +394,7 @@ bot.on("message", async msg => {
     let embed = new Discord.RichEmbed()
     .setColor("#7289DA")
     .setTitle("Support")
-    .setDescription("https://top.gg/bot/694951596286804050/vote\n\n" + bot.user.tag + "\n\n__**Fitur Nikki**__\n•Music\n•Moderator\n•Leveling\n•Fun\n\nSupport Me!")
+    .setDescription("https://top.gg/bot/694951596286804050/vote\n\n" + bot.user.tag + "\n\n__**Fitur Nikki**__\nï¿½Music\nï¿½Moderator\nï¿½Leveling\nï¿½Fun\n\nSupport Me!")
     .setTimestamp()
     .setFooter(`Message From : ${msg.author.username}#${msg.author.discriminator}`, msg.author.displayAvatarURL);
     msg.channel.send(embed);
@@ -761,7 +577,7 @@ bot.on("message", async msg => {
       .setColor("#7289DA")
       .setAuthor(bot.user.tag, bot.user.displayAvatarURL)
       .setDescription(
-        "| [Support Me](https://discord.gg/Sqj6UQp) | [Invite Me](https://discordapp.com/oauth2/authorize?client_id=694951596286804050&scope=bot&permissions=8) | [Vote](https://top.gg/bot/694951596286804050/vote) | [YouTube](https://www.youtube.com/channel/UCODLE_vcAUAquA4u0UKegBQ) |\n__**AUTHOR : " + author + "**__\n__**UPTIME : " + uptime + "**__\n__**CREATE : 2/4/2020**__\n__**PREFIX : !!!**__\n\n__**MUSIK**__ \n``play, skip, stop, pause, volume [1/100], nowplaying, queue, join, leave``\n\n__**ADMIN**__\n``ban, kick, warn``\n\n__**GENERAL**__\n``say, avatar, profile, avatarguild``\n\n__**UTILITY**__\n``ping, server``\n\n__**LEVELS**__\n``level``\n\n__**OWNER**__\n``restart, bot``\n\n__**Tutorial Create Bots**__\n``tutorialbot``\n\n__**CONTACT**__\n`Discord : " + author + "\nIG : hilo_segerrr\nIF THERE IS AN ERROR CONTACT THE OWNER / WRITER!`")
+        "__**MUSIK**__ \n``play, skip, stop, pause, volume [1/100], nowplaying, queue, join, leave``\n\n__**ADMIN**__\n``ban, kick, warn``\n\n__**GENERAL**__\n``say, avatar, profile, avatarguild``\n\n__**UTILITY**__\n``ping, server``\n\n__**LEVELS**__\n``level``\n\n__**OWNER**__\n``restart, bot``\n\n__**Tutorial Create Bots**__\n``tutorialbot``\n\n__**CONTACT**__\n`Discord : " + author + "\nIG : " + instagram + "\nIF THERE IS AN ERROR CONTACT THE OWNER / WRITER!`")
       .setTimestamp()
       .setFooter(
         `Message From : ${msg.author.username}#${msg.author.discriminator}`,
