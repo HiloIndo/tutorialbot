@@ -12,6 +12,7 @@ const queue = new Map();
 const client = new Discord.Client();
 const author = '';
 const instagram = '';
+const idowner = '';
 
 
 ////////////////////////////////////////////////////CLIENT////////////////////////////////////////////////////////////////////
@@ -274,7 +275,7 @@ bot.on("message", function(message) {
   //command
 
   if (command === "bot" || command === "infobot") {
-    if (message.author.id !== "331684540223586304")
+    if (message.author.id !== `${idowmer}`)
       return message.channel.send(
         "<@" + message.author.id + ">" + " You Not Owner"
       );
@@ -323,7 +324,7 @@ bot.on("message", function(message) {
   }
 
   if (command === "restart" || command === "r") {
-    if (message.author.id !== "331684540223586304")
+    if (message.author.id !== `${idowner}`)
       return message.channel.send("You Not Owner");
     let embed = new Discord.RichEmbed()
       .setColor("#7289DA")
@@ -356,48 +357,10 @@ bot.on("message", async msg => {
     .setDescription("[Video Tutorial Music Bot By Zealcord Nation](https://www.youtube.com/watch?v=ZL7rC0xiV9c)")
     .setColor("#7289DA")
     .setTimestamp()
-    .setFooter(`Pesan Dari : ${msg.author.username}#${msg.author.discriminator}`, msg.author.displayAvatarURL);
-    msg.channel.send(embed);
-  }
-  
-  if (command === "purge" || command === "del" || command === "delete") {
-    // This command removes all messages from all users in the channel, up to 100.
-
-    // get the delete count, as an actual number.
-    const deleteCount = parseInt(args[1], 10);
-
-    // Ooooh nice, combined conditions. <3
-    if (!deleteCount || deleteCount < 2 || deleteCount > 100)
-      return msg.reply({
-        embed: {
-          color: 3447003,
-          description: "Pesan Yang Harus Dihapus Min 2 Max 100...",
-          timestamp: new Date(),
-              footer: {
-                icon_url: client.user.avatarURL,
-                text: `Pesan Dari : ${msg.author.username}#${msg.author.discriminator}`
-              }
-        }
-      });
-
-    // So we get our messages, and delete them. Simple enough, right?
-    const fetched = await msg.channel.fetchMessages({ limit: deleteCount });
-    msg.channel
-      .bulkDelete(deleteCount)
-      .catch(error =>
-        msg.reply(`Ga Bisa Ngehapus Pesan Karena : ${error}`)
+    .setFooter(
+        `Message From : ${msg.author.username}#${msg.author.discriminator}`,
+        msg.author.displayAvatarURL
       );
-  }
-  
-  
-  if (command === "vote") {
-    let embed = new Discord.RichEmbed()
-    .setColor("#7289DA")
-    .setTitle("Support")
-    .setDescription("https://top.gg/bot/694951596286804050/vote\n\n" + bot.user.tag + "\n\n__**Fitur Nikki**__\n�Music\n�Moderator\n�Leveling\n�Fun\n\nSupport Me!")
-    .setTimestamp()
-    .setFooter(`Message From : ${msg.author.username}#${msg.author.discriminator}`, msg.author.displayAvatarURL);
-    msg.channel.send(embed);
   }
   
   if (command === "avatarguild" || command === "avaguild") {
@@ -422,16 +385,15 @@ bot.on("message", async msg => {
       .setAuthor(msg.guild.name)
       .addField("Ping", `${Date.now() - msg.createdTimestamp} MS`)
       .addField("Member Count", `${msg.guild.memberCount} MEMBER`, true)
-      .addField("Guild Count", `${bot.guilds.size} SERVER`, true)
-      .addField(
-        "Channel Voice Count",
-        msg.guild.channels.filter(x => x.type === "voice").size + " VOICE",
-        true
-      )
       .addField(
         "Category Count",
         msg.guild.channels.filter(x => x.type === "category").size +
           " CATEGORY",
+        true
+      )
+      .addField(
+        "Channel Voice Count",
+        msg.guild.channels.filter(x => x.type === "voice").size + " VOICE",
         true
       )
       .addField(
@@ -869,7 +831,7 @@ function play(guild, song) {
   const serverQueue = queue.get(guild.id);
 
   if (!song) {
-    serverQueue.textChannel.send("No Music, I'm Out")
+    serverQueue.textChannel.send("No Music, I'm Out 👋")
     serverQueue.voiceChannel.leave();
     queue.delete(guild.id);
     return;
