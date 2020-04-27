@@ -40,7 +40,7 @@ client.on("message", message => {
       .setTitle("Congratulation")
       .setDescription("You Level Up!! `" + userInfo.level + "`" )
         message.reply(embed).then(message => {
-            message.delete(10000);
+            message.delete(20000);
         })
     }
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
